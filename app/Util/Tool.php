@@ -70,7 +70,7 @@ class Tool {
      * 获取登录凭证
      * @return array
      */
-    public static function getSequenceAndVoucher(){
+    public static function getSequenceAndVoucher($email){
 
         //定义序列码长度
         $seqLen = config('TDConfig.seqLen');
@@ -89,7 +89,7 @@ class Tool {
         }
 
         //获取加密文本（盐值+整10时间戳+站点密码）
-        $str .= (int)(time()/10)*10 . config('TDConfig.password');
+        $str .= (int)(time()/10)*10 . $email . config('TDConfig.password');
 
         //bcrypt加密
         $voucher = bcrypt($str);

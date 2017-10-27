@@ -26,7 +26,7 @@ class LoginController extends Controller {
         if(!$this->loginValidation($request)) return;
 
         if(Auth::validate(['email'=>$request->get('email'),'password'=>$request->get('password')])){
-            return Tool::apiOutput(Codes::SUCCESS,Tool::getSequenceAndVoucher());
+            return Tool::apiOutput(Codes::SUCCESS,Tool::getSequenceAndVoucher($request->get('email')));
         }else{
             return Tool::apiOutput(Codes::NAME_OR_PASSWORD_ERROR);
         }
