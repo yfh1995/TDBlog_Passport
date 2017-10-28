@@ -88,14 +88,14 @@ class Tool {
             $str .= $saltMap[$keys[$sequenceIndex[$i]]][abs(ord($keys[$sequenceIndex[$i]])-ord($keys[$sequenceIndex[($i+1)%$seqLen]]))%$seqLen];
         }
 
-        //获取加密文本（盐值+整10时间戳+站点密码）
+        //获取加密文本（盐值+整10时间戳+email+站点密码）
         $str .= (int)(time()/10)*10 . $email . config('TDConfig.password');
 
-        //bcrypt加密
-        $voucher = bcrypt($str);
+        //hash加密
+        $voucher = hash('sha256',$str);
         return [
             'sequence'  =>  $sequence,
-            'voucher'      =>  $voucher
+            'voucher'   =>  $voucher
         ];
     }
 
