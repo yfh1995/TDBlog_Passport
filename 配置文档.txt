@@ -2,3 +2,5 @@
 1.导入根目录下tdblog.sql数据库文件；
 
 2.复制.env.example为.env，并配置数据库参数；
+
+3.（可选，配合postman）配置服务器虚拟主机地址为passport.tdblog.com，并配置hosts；
