@@ -1,0 +1,4 @@
+
+1.导入根目录下tdblog.sql数据库文件；
+
+2.复制.env.example为.env，并配置数据库参数；
