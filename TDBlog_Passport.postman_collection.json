@@ -1,0 +1,53 @@
+{
+	"id": "39f48de6-e7bb-d080-93da-a301fe12eaac",
+	"name": "TDBlog_Passport",
+	"description": "",
+	"order": [
+		"69ffaf79-5b4c-bccf-71bf-2c0b87a303a6"
+	],
+	"folders": [],
+	"folders_order": [],
+	"timestamp": 1509206214960,
+	"owner": "2572162",
+	"public": false,
+	"requests": [
+		{
+			"id": "69ffaf79-5b4c-bccf-71bf-2c0b87a303a6",
+			"headers": "",
+			"headerData": [],
+			"url": "passport.tdblog.com/api/login",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "39f48de6-e7bb-d080-93da-a301fe12eaac",
+			"data": [
+				{
+					"key": "email",
+					"value": "690828339@qq.com",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "admin",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"name": "获取登录凭证",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1509206275918,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		}
+	]
+}
