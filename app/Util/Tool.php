@@ -13,14 +13,22 @@ use Illuminate\Support\Facades\Lang;
 
 class Tool {
 
-    public static function apiOutput($code, $data){
+    public static function apiOutput($code, $data = ''){
 
         header('Content-type:text/json;charset=utf-8');
 
         $return['code'] = $code;
         $return['msg'] = Codes::$MSG[$code];
         $return['data'] = $data;
-        echo json_encode($return);
+        return json_encode($return);
+    }
+
+    /**
+     * 获取验证码
+     * @return int
+     */
+    public static function getVerificationCode(){
+        return rand(100000,999999);
     }
 
     /**

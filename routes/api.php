@@ -13,4 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::post('/login','Api\LoginController@login');
+//发放登录凭证
+Route::post('/login','Api\AuthController@login');
+
+//注册
+Route::post('/register','Api\AuthController@register');
+
+//通用邮件发送接口
+Route::post('/sendEmail','Api\EmailController@sendEmail');
