@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,11 +11,23 @@ use Illuminate\Http\Request;
 |
 */
 
-//发放登录凭证
-Route::post('/login','Api\AuthController@login');
+Route::group(['namespace'=>'Api'],function(){
 
-//注册
-Route::post('/register','Api\AuthController@register');
+    //发放登录凭证
+    Route::post('/login','AuthController@login');
 
-//通用邮件发送接口
-Route::post('/sendEmail','Api\EmailController@sendEmail');
+    //注册
+    Route::post('/register','AuthController@register');
+
+    //通用邮件发送接口
+    Route::post('/sendEmail','EmailController@sendEmail');
+
+    //============================工具方法=========================
+    Route::group(['prefix'=>'tool'],function(){
+
+        //强制更新后台configs缓存
+        Route::get('/updateBackendConfigsCache','ToolController@updateBackendConfigsCache');
+
+    });
+
+});

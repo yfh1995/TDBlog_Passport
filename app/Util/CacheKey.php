@@ -15,6 +15,8 @@ namespace App\Util;
  */
 class CacheKey{
 
+    //数据表在缓存中的键
+
     const AdminTableVersion = 'admin_table_version';
     const AdminConfig = 'admin_config';
     const AdminMenu = 'admin_menu';
@@ -26,4 +28,8 @@ class CacheKey{
     const AdminRolePermissions = 'admin_role_permission';
     const AdminRoleUser = 'admin_role_user';
     const AdminUserPermissions = 'admin_user_permissions';
+
+    //邮件发送在缓存中的键
+
+    const SendEmailForRegister = 'send_email_for_register';
 }

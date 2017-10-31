@@ -1,18 +1,34 @@
 {
-	"id": "39f48de6-e7bb-d080-93da-a301fe12eaac",
+	"id": "ac0f3114-b8c8-f297-50cc-b9f72ffe27dc",
 	"name": "TDBlog_Passport",
 	"description": "",
 	"order": [
-		"69ffaf79-5b4c-bccf-71bf-2c0b87a303a6"
+		"26c1e7b3-3802-ca80-400c-1dff123e5baa",
+		"413259a2-5ab7-7504-3785-7811fb6f98b9",
+		"c1b8cb3d-6d98-f27d-71de-43a67a40c43a"
 	],
-	"folders": [],
-	"folders_order": [],
+	"folders": [
+		{
+			"name": "工具接口",
+			"description": "",
+			"collectionId": "ac0f3114-b8c8-f297-50cc-b9f72ffe27dc",
+			"order": [
+				"3e9b2bb2-6d90-7c75-e222-ba944afd5178"
+			],
+			"owner": "2590421",
+			"folders_order": [],
+			"id": "2f956329-bdf6-d05f-1152-24e30c2dd388"
+		}
+	],
+	"folders_order": [
+		"2f956329-bdf6-d05f-1152-24e30c2dd388"
+	],
 	"timestamp": 1509206214960,
-	"owner": "2572162",
+	"owner": "2590421",
 	"public": false,
 	"requests": [
 		{
-			"id": "69ffaf79-5b4c-bccf-71bf-2c0b87a303a6",
+			"id": "26c1e7b3-3802-ca80-400c-1dff123e5baa",
 			"headers": "",
 			"headerData": [],
 			"url": "passport.tdblog.com/api/login",
@@ -21,7 +37,7 @@
 			"pathVariableData": [],
 			"preRequestScript": null,
 			"method": "POST",
-			"collectionId": "39f48de6-e7bb-d080-93da-a301fe12eaac",
+			"collectionId": "ac0f3114-b8c8-f297-50cc-b9f72ffe27dc",
 			"data": [
 				{
 					"key": "email",
@@ -47,7 +63,143 @@
 			"responses": [],
 			"tests": null,
 			"currentHelper": "normal",
+			"helperAttributes": {},
+			"collection_id": "ac0f3114-b8c8-f297-50cc-b9f72ffe27dc"
+		},
+		{
+			"id": "3e9b2bb2-6d90-7c75-e222-ba944afd5178",
+			"headers": "",
+			"headerData": [],
+			"url": "passport.tdblog.com/api/tool/updateBackendConfigsCache",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "ac0f3114-b8c8-f297-50cc-b9f72ffe27dc",
+			"data": null,
+			"dataMode": "params",
+			"name": "强制更新后台configs缓存",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1509430329855,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "2f956329-bdf6-d05f-1152-24e30c2dd388"
+		},
+		{
+			"id": "413259a2-5ab7-7504-3785-7811fb6f98b9",
+			"headers": "",
+			"headerData": [],
+			"url": "passport.tdblog.com/api/register",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "ac0f3114-b8c8-f297-50cc-b9f72ffe27dc",
+			"data": [
+				{
+					"key": "email",
+					"value": "690828338@qq.com",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "111111",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password_confirmation",
+					"value": "111111",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "verificationCode",
+					"value": "358982",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"name": "注册",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1509435978853,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
 			"helperAttributes": {}
+		},
+		{
+			"id": "c1b8cb3d-6d98-f27d-71de-43a67a40c43a",
+			"headers": "//Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImM1ODc1MDEwYThhNmZmNzg2YjRkNTk4YWRmYTI4Njg0NDBmYzhkZjllMzNhMzViNTFjNmM5ZDg2YWZlYjRmZDk1YzUyMGFiOGRlNzFjM2NhIn0.eyJhdWQiOiIxIiwianRpIjoiYzU4NzUwMTBhOGE2ZmY3ODZiNGQ1OThhZGZhMjg2ODQ0MGZjOGRmOWUzM2EzNWI1MWM2YzlkODZhZmViNGZkOTVjNTIwYWI4ZGU3MWMzY2EiLCJpYXQiOjE1MDkwMDAwMjEsIm5iZiI6MTUwOTAwMDAyMSwiZXhwIjoxNTQwNTM2MDIxLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.05pb9Z2TG63gkd7_cUfIVSpm3K_ELVFnkQMacQ7_Btn_Cansano3VWUtAb52M0m9HuX8HS5i6MvvL8ZdjzOk8UsZPne3wGcWobJuhrBq-FX7mayFiyVdn9Mq6OIsyGY_yof96oFBdmnQ_2nYlBdpcf6ygDobLP1lDkFaHURBMI61tVhJpWknmf3q9ydFJbKPQB7crGm1WkzJmOHkWof_4N_PEuvuq0M79DII4U_uTC35CpgLzzvAEyN5Hru36nfzLrgCfGTedrGwiVbg-l4dvXUlafAdDwkn2NMAkkMrmYqNZbeD6t_ai2HgMEJsVf2GW-7DDSyIQUBSvay0OhfWjQlnkRTs0o_bd8bISgWRjc7jumr9hV6C_DE1q0ZNUMS-WpeJG5W8E9yGZ08Ic3bukXg4hy0VxLqmum6_etobBlQHKdUacDhHNTn2y6mmtaslRrhXAyerI1P7kRLEHMm22cyJfOZp4B7Tk_BeGBjoGpqVV8tgTFqCKRf4EoDfr1Eot8dNQ8oD4qhmlEaI2cHc-D-Kz0XO5h8gCeMenF62KeX1_gX2fL77YsCmQtyTNewSRiW5AqzW13Yn97a3t56kyAZBRg4rCji8Gu5Ijk_6DOJLDUEfKZ-ZZ64tZVwibGbtanHGxka6NclYlDWZmM-hcOqYDRkakKOpAQLXf-2qdjM\n//Accept: application/json\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImM1ODc1MDEwYThhNmZmNzg2YjRkNTk4YWRmYTI4Njg0NDBmYzhkZjllMzNhMzViNTFjNmM5ZDg2YWZlYjRmZDk1YzUyMGFiOGRlNzFjM2NhIn0.eyJhdWQiOiIxIiwianRpIjoiYzU4NzUwMTBhOGE2ZmY3ODZiNGQ1OThhZGZhMjg2ODQ0MGZjOGRmOWUzM2EzNWI1MWM2YzlkODZhZmViNGZkOTVjNTIwYWI4ZGU3MWMzY2EiLCJpYXQiOjE1MDkwMDAwMjEsIm5iZiI6MTUwOTAwMDAyMSwiZXhwIjoxNTQwNTM2MDIxLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.05pb9Z2TG63gkd7_cUfIVSpm3K_ELVFnkQMacQ7_Btn_Cansano3VWUtAb52M0m9HuX8HS5i6MvvL8ZdjzOk8UsZPne3wGcWobJuhrBq-FX7mayFiyVdn9Mq6OIsyGY_yof96oFBdmnQ_2nYlBdpcf6ygDobLP1lDkFaHURBMI61tVhJpWknmf3q9ydFJbKPQB7crGm1WkzJmOHkWof_4N_PEuvuq0M79DII4U_uTC35CpgLzzvAEyN5Hru36nfzLrgCfGTedrGwiVbg-l4dvXUlafAdDwkn2NMAkkMrmYqNZbeD6t_ai2HgMEJsVf2GW-7DDSyIQUBSvay0OhfWjQlnkRTs0o_bd8bISgWRjc7jumr9hV6C_DE1q0ZNUMS-WpeJG5W8E9yGZ08Ic3bukXg4hy0VxLqmum6_etobBlQHKdUacDhHNTn2y6mmtaslRrhXAyerI1P7kRLEHMm22cyJfOZp4B7Tk_BeGBjoGpqVV8tgTFqCKRf4EoDfr1Eot8dNQ8oD4qhmlEaI2cHc-D-Kz0XO5h8gCeMenF62KeX1_gX2fL77YsCmQtyTNewSRiW5AqzW13Yn97a3t56kyAZBRg4rCji8Gu5Ijk_6DOJLDUEfKZ-ZZ64tZVwibGbtanHGxka6NclYlDWZmM-hcOqYDRkakKOpAQLXf-2qdjM",
+					"enabled": false,
+					"description": ""
+				},
+				{
+					"key": "Accept",
+					"value": "application/json",
+					"enabled": false,
+					"description": ""
+				}
+			],
+			"url": "passport.tdblog.com/api/sendEmail",
+			"folder": null,
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [
+				{
+					"key": "email",
+					"value": "690828339@qq.com",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "admin",
+					"description": "",
+					"type": "text",
+					"enabled": false
+				},
+				{
+					"key": "emailType",
+					"value": "1",
+					"description": "1.用户注册时获取验证码邮件;",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": "{}",
+			"time": 1509428594372,
+			"name": "统一邮件发送接口",
+			"description": "",
+			"collectionId": "ac0f3114-b8c8-f297-50cc-b9f72ffe27dc",
+			"responses": [],
+			"rawModeData": null,
+			"descriptionFormat": "html"
 		}
 	]
 }
