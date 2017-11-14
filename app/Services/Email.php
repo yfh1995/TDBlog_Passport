@@ -22,61 +22,61 @@ use Illuminate\Validation\Rule;
 
 class Email {
 
-    //注册邮件类型编号
+    //账号注册邮件
     const REGISTER_EMAIL = 1;
 
+    //邮件发送配置
     public static $emailConfig = [
-
-        //一组邮件发送类型的配置
+        //一组验证码的配置
         //  cacheKey        邮件在缓存中的键
-        //  effectiveTime   验证码有效时间，单位：s
-        self::REGISTER_EMAIL => [
-            'cacheKey'      =>  CacheKey::SendEmailForRegister,
-            'effectiveTime' =>  60,
+        //  cacheTime       缓存时间，单位：s
+
+        //用户注册配置
+        self::REGISTER_EMAIL    =>  [
+            'cacheKey'  =>  CacheKey::EmailRegister,
+            'cacheTime' =>  60,
         ],
     ];
 
+    //配置表信息
     public $configs;
 
     /**
      * 邮件发送
      * @param $request
      * @param $configs
-     * @return array|bool|string
+     * @return array
      */
     public function sendEmail($request, $configs){
         $this->configs = $configs;
         $res = $this->sendEmailValidation($request);
         if($res !== true) return $res;
 
-        $res = Tool::apiOutput(Codes::UNKNOWN_ERROR);
+        //获取参数
         $params = $request->only(['email','emailType']);
 
-        // 单位时间内只能发送一次邮件
-        if($cacheEmail = Cache::get(self::$emailConfig[$params['emailType']]['cacheKey'])){
-            if(time() - $cacheEmail['time'] <= self::$emailConfig[$params['emailType']]['effectiveTime']) {
-                return $this->returnData(Codes::CANNOT_SEND_EMAIL_WITHIN_TIME, self::$emailConfig[$params['emailType']]['effectiveTime'].multilingual('prompt.cannotSendEmailWithinUnitTime'));
-            }
+        //防止重复发送
+        if(Cache::get($params['email'].self::$emailConfig[$params['emailType']]['cacheKey'])){
+            return $this->returnData(Codes::CANNOT_SEND_EMAIL_WITHIN_TIME,Codes::$MSG[Codes::CANNOT_SEND_EMAIL_WITHIN_TIME]);
         }
 
-        //刷新cache
-        $code = Tool::getVerificationCode();
-        Cache::put(self::$emailConfig[$params['emailType']]['cacheKey'],['time'=>time(),'code'=>$code],self::$emailConfig[$params['emailType']]['effectiveTime']/60);
-
-        // 1.用户注册时获取验证码邮件
+        //刷新缓存
+        Cache::put($params['email'].self::$emailConfig[$params['emailType']]['cacheKey'],true,self::$emailConfig[$params['emailType']]['cacheTime']/60);
 
         switch ($params['emailType']){
+            // 1.用户注册时获取验证码邮件
             case self::REGISTER_EMAIL:
-                $isSend = $this->sendRegisterEmail($params['email'],$code);
-                if($isSend) $res = $this->returnData(Codes::SUCCESS);
-                else{
-                    Log::error('\api\sendEmail接口用户注册邮件发送失败，目标email：'.$params['email']);
-                    $res = $this->returnData(Codes::FAIL);
-                }
+                $code = $this->sendRegisterEmail($params['email']);
+                $res = $this->returnData($code,Codes::$MSG[$code]);
                 break;
             default:
-                Log::error('\api\sendEmail接口emailType参数非法，emailType：'.$params['emailType']);
+                $res = $this->returnData(Codes::PARAMS_ERROR,Codes::$MSG[Codes::PARAMS_ERROR]);
                 break;
+        }
+
+        //记录错误日志
+        if($res['code'] != Codes::SUCCESS){
+            Log::error('\api\sendEmail接口用户注册邮件发送失败，目标email：'.$params['email'].'，错误code：'.$res['code'].'，错误信息：'.$res['data']);
         }
 
         return $res;
@@ -84,11 +84,12 @@ class Email {
 
     /**
      * 规定服务返回数据格式
-     * @param $code
+     * @param int $code
      * @param string $data
      * @return array
      */
     private function returnData($code, $data = ''){
+
         return [
             'code'  =>  $code,
             'data'  =>  $data
@@ -122,14 +123,14 @@ class Email {
 
     /**
      * 发送注册邮件
-     * @param $email
-     * @param string $code
-     * @return bool
+     * @param string $email
+     * @return int
      */
-    private function sendRegisterEmail($email, $code = ''){
-        if($code == '') $code = Tool::getVerificationCode();
+    private function sendRegisterEmail($email){
+        $code = VerificationCode::getVerificationCode(VerificationCode::REGISTER_CODE, $email);
+        if($code['code'] != Codes::SUCCESS) return $code['code'];
 
-        Mail::to($email)->queue(new RegisterEmail($code));
-        return true;
+        Mail::to($email)->queue(new RegisterEmail($code['vCode']));
+        return $code['code'];
     }
 }

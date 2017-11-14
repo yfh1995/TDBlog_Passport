@@ -18,6 +18,7 @@ return [
     'valMax'        =>  '长度不能大于',
     'valNumeric'    =>  '必须为数字',
     'valIn'         =>  '参数不合法',
+    'valUnique'     =>  '已被占用',
     'valPasswordConfirmed' =>  '两次输入的密码不一致',
 
     'cannotSendEmailWithinUnitTime'    =>  '秒内不能多次发送邮件',

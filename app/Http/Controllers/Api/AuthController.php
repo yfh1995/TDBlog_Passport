@@ -12,7 +12,9 @@ namespace App\Http\Controllers\Api;
 use App\Events\Register;
 use App\Http\Controllers\Controller;
 use App\Services\Email;
+use App\Services\VerificationCode;
 use App\Util\Codes;
+use App\Util\TablesName;
 use App\Util\Tool;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -66,7 +68,7 @@ class AuthController extends Controller {
     /**
      * 注册
      * @param Request $request
-     * @return bool|string
+     * @return string
      */
     public function register(Request $request){
         $res = $this->registerValidation($request);
@@ -75,13 +77,18 @@ class AuthController extends Controller {
         $params = $request->only(['email','password','verificationCode']);
 
         //验证验证码有效性
-        if(!$this->registerCodeValidation($params['verificationCode'])){
-            return Tool::apiOutput(Codes::VERIFICATION_CODE_INVALID_OR_ERROR);
+        $code = VerificationCode::checkVerificationCode(VerificationCode::REGISTER_CODE,$params['verificationCode'],$params['email']);
+        if($code != Codes::SUCCESS){
+            return Tool::apiOutput($code,Codes::$MSG[$code]);
         }
 
         //触发用户注册事件
         $res = Event::fire(new Register($request,$this->configs['default_avatar']));
-        if($res[0] !== true) return $res;
+        foreach ($res as $one){
+            if($one != Codes::SUCCESS){
+                return Tool::apiOutput($one,Codes::$MSG[$one]);
+            }
+        }
 
         //返回登录凭证
         return Tool::apiOutput(Codes::SUCCESS,Tool::getSequenceAndVoucher($request->get('email')));
@@ -95,12 +102,13 @@ class AuthController extends Controller {
     private function registerValidation($request){
 
         $validator = Validator::make($request->all(),[
-            'email'     =>  'required|email|max:'.$this->configs['email_min_length'],
+            'email'     =>  'required|email|unique:'.TablesName::ADMIN_USERS.'|max:'.$this->configs['email_min_length'],
             'password'  =>  'required|confirmed|min:'.$this->configs['password_min_length'].'|max:'.$this->configs['password_max_length'],
             'verificationCode'  =>  'required|min:'.$this->configs['sms_length'].'|max:'.$this->configs['sms_length']
         ],[
             'email.required'    =>  multilingual('prompt.email').multilingual('valRequired'),
             'email.email'       =>  multilingual('prompt.email').multilingual('prompt.valEmail'),
+            'email.unique'      =>  multilingual('prompt.email').multilingual('prompt.valUnique'),
             'email.max'         =>  multilingual('prompt.email').multilingual('prompt.valMax').$this->configs['email_min_length'],
             'password.required' =>  multilingual('prompt.password').multilingual('prompt.valRequired'),
             'password.min'      =>  multilingual('prompt.password').multilingual('prompt.valMin').$this->configs['password_min_length'],
@@ -115,20 +123,6 @@ class AuthController extends Controller {
             return Tool::apiOutput(Codes::PARAMS_ERROR,$validator->errors()->all());
         }
         return true;
-    }
-
-    /**
-     * 验证验证码正确性
-     * @param $code
-     * @return bool
-     */
-    private function registerCodeValidation($code){
-
-        $cacheEmail = Cache::get(Email::$emailConfig[Email::REGISTER_EMAIL]['cacheKey']);
-        if(!$cacheEmail || !isset($cacheEmail['code'])) return false;
-
-        if($code == $cacheEmail['code']) return true;
-        else return false;
     }
 
 }

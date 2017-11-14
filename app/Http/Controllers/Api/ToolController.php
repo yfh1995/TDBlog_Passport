@@ -9,7 +9,7 @@
 namespace App\Http\Controllers\Api;
 
 
-use App\Configs;
+use App\Models\Configs;
 use App\Http\Controllers\Controller;
 use App\Util\Codes;
 use App\Util\Tool;

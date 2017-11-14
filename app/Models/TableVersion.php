@@ -1,15 +1,16 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Util\CacheKey;
+use App\Util\TablesName;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class TableVersion extends Model {
 
-    protected $table = 'base_table_version';
+    protected $table = TablesName::BASE_TABLE_VERSION;
 
 
     /**

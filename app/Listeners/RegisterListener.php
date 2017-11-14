@@ -25,7 +25,7 @@ class RegisterListener
      * 用户注册事件处理
      *
      * @param  Register  $event
-     * @return string|bool
+     * @return int
      */
     public function handle(Register $event)
     {
@@ -45,11 +45,11 @@ class RegisterListener
         if(!$user){
             Log::error('用户注册，生成admin_users表数据失败，用户email：'.$email.'，password：'.$password);
             DB::rollback();
-            return Tool::apiOutput(Codes::DATA_CREATE_ERROR);
+            return Codes::DATA_CREATE_ERROR;
         }
 
         DB::commit();
 
-        return true;
+        return Codes::SUCCESS;
     }
 }

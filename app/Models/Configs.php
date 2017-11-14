@@ -1,8 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Util\CacheKey;
+use App\Util\TablesName;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +15,7 @@ class Configs extends Model {
     const STATUS_CLOSE = 0;  //关闭配置
     const STATUS_OPEN = 1; //开启配置
 
-    protected $table = 'admin_configs';
+    protected $table = TablesName::ADMIN_CONFIGS;
 
     public static function getStatusCode($status){
         if($status == self::STATUS_OPEN) return '开启';

@@ -29,7 +29,11 @@ class CacheKey{
     const AdminRoleUser = 'admin_role_user';
     const AdminUserPermissions = 'admin_user_permissions';
 
-    //邮件发送在缓存中的键
+    //邮件在缓存中的键
 
-    const SendEmailForRegister = 'send_email_for_register';
+    const EmailRegister = 'email_register';
+
+    //验证码在缓存中的键
+
+    const CodeRegister = 'code_register';
 }

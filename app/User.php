@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Util\TablesName;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
@@ -10,7 +11,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 
-    public $table = 'admin_users';
+    public $table = TablesName::ADMIN_USERS;
 
     /**
      * The attributes that are mass assignable.

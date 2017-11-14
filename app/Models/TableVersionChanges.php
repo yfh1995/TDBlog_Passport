@@ -1,18 +1,19 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use App\Util\TablesName;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class TableVersionChanges extends Model {
 
-    protected $table = 'base_table_version_changes';
+    protected $table = TablesName::BASE_TABLE_VERSION_CHANGES;
 
     /**
      * 校验数据表版本信息，发现非法数据返回false，否则返回需要更新的数据
-     * @param $data         版本字符串，格式：0,1,0,4,5.....，对应表顺序默认与数据库存储顺序一致
+     * @param string $data  版本字符串，格式：0,1,0,4,5.....，对应表顺序默认与数据库存储顺序一致
      * @return array|bool   返回更新数据格式：
      * [
      *      'table_name':[
