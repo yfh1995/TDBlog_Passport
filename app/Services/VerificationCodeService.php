@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
-class VerificationCode {
+class VerificationCodeService {
 
     //用户注册
     const REGISTER_CODE = 1;

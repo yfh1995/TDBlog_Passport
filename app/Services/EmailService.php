@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-class Email {
+class EmailService {
 
     //账号注册邮件
     const REGISTER_EMAIL = 1;
@@ -127,7 +127,7 @@ class Email {
      * @return int
      */
     private function sendRegisterEmail($email){
-        $code = VerificationCode::getVerificationCode(VerificationCode::REGISTER_CODE, $email);
+        $code = VerificationCodeService::getVerificationCode(VerificationCodeService::REGISTER_CODE, $email);
         if($code['code'] != Codes::SUCCESS) return $code['code'];
 
         Mail::to($email)->queue(new RegisterEmail($code['vCode']));
