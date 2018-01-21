@@ -11,8 +11,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\Register;
 use App\Http\Controllers\Controller;
-use App\Services\Email;
-use App\Services\VerificationCode;
+use App\Services\EmailService;
+use App\Services\VerificationCodeService;
 use App\Util\Codes;
 use App\Util\TablesName;
 use App\Util\Tool;
@@ -24,10 +24,35 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller {
 
+
     /**
-     * 登录授权
-     * @param Request $request
-     * @return string
+     * @SWG\Post(
+     *     path="/api/login",
+     *     tags={"Auth"},
+     *     summary="用户登录授权接口",
+     *     description="",
+     *     operationId="base-auth-login",
+     *     produces={"application/xml", "application/json"},
+     *     @SWG\Parameter(
+     *         name="email",
+     *         description="邮箱",
+     *         required=true,
+     *         type="string",
+     *         format="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="password",
+     *         description="密码",
+     *         required=true,
+     *         type="string",
+     *         format="string"
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="请求成功",
+     *         @SWG\Schema(ref="#/definitions/login")
+     *     )
+     * )
      */
     public function login(Request $request){
         $res = $this->loginValidation($request);
@@ -38,6 +63,65 @@ class AuthController extends Controller {
         }else{
             return Tool::apiOutput(Codes::NAME_OR_PASSWORD_ERROR);
         }
+    }
+
+    /**
+     * @SWG\Post(
+     *     path="/api/register",
+     *     tags={"Auth"},
+     *     summary="用户注册接口",
+     *     description="",
+     *     operationId="base-auth-register",
+     *     produces={"application/xml", "application/json"},
+     *     @SWG\Parameter(
+     *         name="email",
+     *         description="邮箱",
+     *         required=true,
+     *         type="string",
+     *         format="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="password",
+     *         description="密码",
+     *         required=true,
+     *         type="string",
+     *         format="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="verificationCode",
+     *         description="验证码",
+     *         required=true,
+     *         type="string",
+     *         format="string"
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="请求成功"
+     *     )
+     * )
+     */
+    public function register(Request $request){
+        $res = $this->registerValidation($request);
+        if($res !== true) return $res;
+
+        $params = $request->only(['email','password','verificationCode']);
+
+        //验证验证码有效性
+        $code = VerificationCodeService::checkVerificationCode(VerificationCodeService::REGISTER_CODE,$params['verificationCode'],$params['email']);
+        if($code != Codes::SUCCESS){
+            return Tool::apiOutput($code,Codes::$MSG[$code]);
+        }
+
+        //触发用户注册事件
+        $res = Event::fire(new Register($request,$this->configs['default_avatar']));
+        foreach ($res as $one){
+            if($one != Codes::SUCCESS){
+                return Tool::apiOutput($one,Codes::$MSG[$one]);
+            }
+        }
+
+        //返回登录凭证
+        return Tool::apiOutput(Codes::SUCCESS,Tool::getSequenceAndVoucher($request->get('email')));
     }
 
     /**
@@ -63,35 +147,6 @@ class AuthController extends Controller {
             return Tool::apiOutput(Codes::PARAMS_ERROR,$validator->errors()->all());
         }
         return true;
-    }
-
-    /**
-     * 注册
-     * @param Request $request
-     * @return string
-     */
-    public function register(Request $request){
-        $res = $this->registerValidation($request);
-        if($res !== true) return $res;
-
-        $params = $request->only(['email','password','verificationCode']);
-
-        //验证验证码有效性
-        $code = VerificationCode::checkVerificationCode(VerificationCode::REGISTER_CODE,$params['verificationCode'],$params['email']);
-        if($code != Codes::SUCCESS){
-            return Tool::apiOutput($code,Codes::$MSG[$code]);
-        }
-
-        //触发用户注册事件
-        $res = Event::fire(new Register($request,$this->configs['default_avatar']));
-        foreach ($res as $one){
-            if($one != Codes::SUCCESS){
-                return Tool::apiOutput($one,Codes::$MSG[$one]);
-            }
-        }
-
-        //返回登录凭证
-        return Tool::apiOutput(Codes::SUCCESS,Tool::getSequenceAndVoucher($request->get('email')));
     }
 
     /**
@@ -125,4 +180,21 @@ class AuthController extends Controller {
         return true;
     }
 
+    /**
+     * @SWG\Definition(
+     *     definition="login",
+     *     type="object",
+     *     required={"sequence","voucher"},
+     *     @SWG\Property(
+     *         property="sequence",
+     *         type="string",
+     *         description="序列码"
+     *     ),
+     *     @SWG\Property(
+     *         property="voucher",
+     *         type="string",
+     *         description="凭证"
+     *     )
+     * )
+     */
 }
