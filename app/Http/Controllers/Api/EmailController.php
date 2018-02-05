@@ -17,10 +17,32 @@ use Illuminate\Http\Request;
 class EmailController extends Controller {
 
     /**
-     * 统一邮件发送接口
-     * @param EmailService $email
-     * @param Request $request
-     * @return string
+     * @SWG\Post(
+     *     path="/api/sendEmail",
+     *     tags={"Email"},
+     *     summary="统一邮件发送接口",
+     *     description="",
+     *     operationId="base-email-login",
+     *     produces={"application/xml", "application/json"},
+     *     @SWG\Parameter(
+     *         name="email",
+     *         description="邮箱",
+     *         required=true,
+     *         type="string",
+     *         format="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="emailType",
+     *         description="邮件类型",
+     *         required=true,
+     *         type="integer",
+     *         format="int32"
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="请求成功"
+     *     )
+     * )
      */
     public function sendEmail(EmailService $email, Request $request){
 
