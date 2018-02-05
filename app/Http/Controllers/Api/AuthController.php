@@ -12,7 +12,7 @@ namespace App\Http\Controllers\Api;
 use App\Events\Register;
 use App\Http\Controllers\Controller;
 use App\Services\Email;
-use App\Services\VerificationCode;
+use App\Services\VerificationCodeService;
 use App\Util\Codes;
 use App\Util\TablesName;
 use App\Util\Tool;
@@ -77,7 +77,7 @@ class AuthController extends Controller {
         $params = $request->only(['email','password','verificationCode']);
 
         //验证验证码有效性
-        $code = VerificationCode::checkVerificationCode(VerificationCode::REGISTER_CODE,$params['verificationCode'],$params['email']);
+        $code = VerificationCodeService::checkVerificationCode(VerificationCodeService::REGISTER_CODE,$params['verificationCode'],$params['email']);
         if($code != Codes::SUCCESS){
             return Tool::apiOutput($code,Codes::$MSG[$code]);
         }
